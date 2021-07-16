@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -pedantic -lX11 -lXft -I/usr/include/freetype2 -pthread
+CFLAGS = -Wall -Wextra -pedantic -lX11 -lXft -I/usr/include/freetype2 -pthread -lrt
 
 PREFIX ?= /usr/local
 CC ?= cc
@@ -11,11 +11,9 @@ herbe: herbe.c config.h
 install: herbe
 	mkdir -p ${DESTDIR}${PREFIX}/bin
 	cp -f herbe ${DESTDIR}${PREFIX}/bin
+	rm -f herbe
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/herbe
 
-clean:
-	rm -f herbe
-
-.PHONY: all install uninstall clean
+.PHONY: all install uninstall
