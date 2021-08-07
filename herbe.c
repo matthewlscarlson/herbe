@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
 	{
 		die("Usage: %s body", argv[0]);
 	}
-	
+
 	const char* id =getenv("HERBE_ID");
 	mqd_t mqd=-1;
 	if(id) {
@@ -297,13 +297,11 @@ int main(int argc, char *argv[])
 	attributes.border_pixel = color.pixel;
 	font = XftFontOpenName(display, screen, font_pattern);
 
-	int max_font_width = font->max_advance_width;
-
-	constructLines(argv+1, argc-1);	
+	constructLines(argv+1, argc-1);
 
 	int y_offset_id;
 	unsigned int *y_offset;
-	read_y_offset(&y_offset, &y_offset_id);	
+	read_y_offset(&y_offset, &y_offset_id);
 
 	unsigned int text_height = font->ascent - font->descent;
 	unsigned int height = (num_of_lines - 1) * line_spacing + num_of_lines * text_height + 2 * padding;
@@ -343,11 +341,9 @@ int main(int argc, char *argv[])
 		if (event.type == Expose)
 		{
 			XClearWindow(display, window);
-			for (int i = 0; i < num_of_lines; i++){
-				int len = strlen(lines[i]);
-				XftDrawStringUtf8(draw, &color, font, (width - len*max_font_width)/2, line_spacing * i + text_height * (i + 1) + padding,
-								  (FcChar8 *)lines[i], len);
-			}	
+			for (int i = 0; i < num_of_lines; i++)
+				XftDrawStringUtf8(draw, &color, font, padding, line_spacing * i + text_height * (i + 1) + padding,
+								  (FcChar8 *)lines[i], strlen(lines[i]));
 		}
 		else if (event.type == ButtonPress)
 		{
@@ -360,7 +356,7 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-	
+
 	if (used_y_offset == *y_offset) free_y_offset(y_offset_id);
 	freeLines();
 
